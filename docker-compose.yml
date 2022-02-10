@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.16.2-amd64
+    environment:
+      - LOGSTASH_KEYSTORE_PASS=${LOGSTASH_KEYSTORE_PASS}
+    labels: 
+      author: "Pedro Henrick"
+    container_name: logstash_estudo
+    restart: on-failure
+    volumes:
+      - ./pipeline:/usr/share/logstash/pipeline
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+    #  - ./config/logstash.keystore:/usr/share/logstash/config/logstash.keystore
+    networks: 
+      - elastic
+networks: 
+  elastic:
+    name: elastic
